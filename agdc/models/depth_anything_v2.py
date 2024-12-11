@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 import cv2
 import torch
 
-import digital_cousins
+import agdc
 from metric_depth.depth_anything_v2.dpt import DepthAnythingV2 as _DepthAnythingV2
 
-from digital_cousins.utils.processing_utils import process_depth_linear, unprocess_depth_linear
+from agdc.utils.processing_utils import process_depth_linear, unprocess_depth_linear
 
 
 class DepthAnythingV2(torch.nn.Module):

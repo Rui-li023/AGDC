@@ -11,9 +11,9 @@ from groundingdino.datasets.transforms import RandomResize
 from torchvision.ops import box_convert
 from copy import deepcopy
 
-from digital_cousins.models.clip import CLIPEncoder
-from digital_cousins.models.dino_v2 import DinoV2Encoder
-from digital_cousins.models.grounded_sam_v2 import GroundedSAMv2
+from agdc.models.clip import CLIPEncoder
+from agdc.models.dino_v2 import DinoV2Encoder
+from agdc.models.grounded_sam_v2 import GroundedSAMv2
 
 
 class FeatureMatcher(torch.nn.Module):

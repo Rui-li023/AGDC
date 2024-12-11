@@ -4,7 +4,7 @@ import torchvision
 from torchvision.transforms import Resize, CenterCrop, InterpolationMode, Normalize
 from PIL import Image
 import clip
-from digital_cousins.models.visual_encoder import VisualEncoder
+from agdc.models.visual_encoder import VisualEncoder
 
 
 class CLIPEncoder(VisualEncoder):

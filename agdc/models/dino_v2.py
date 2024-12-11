@@ -4,7 +4,7 @@ import torch
 import torchvision
 from torchvision.transforms import Resize, InterpolationMode, Normalize
 
-from digital_cousins.models.visual_encoder import VisualEncoder
+from agdc.models.visual_encoder import VisualEncoder
 
 
 class DinoV2Encoder(VisualEncoder):

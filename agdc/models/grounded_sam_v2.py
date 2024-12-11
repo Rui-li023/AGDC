@@ -1,5 +1,5 @@
 import torch.nn
-import digital_cousins
+import agdc
 import groundingdino
 from groundingdino.util import box_ops
 from groundingdino.util.inference import load_model, load_image, predict, annotate
@@ -16,8 +16,8 @@ transformer.USE_FLASH_ATTN = True
 transformer.MATH_KERNEL_ON = True
 
 
-GDINO_CHECKPOINT_PATH = f"{digital_cousins.CHECKPOINT_DIR}/groundingdino_swint_ogc.pth"
-GSAMV2_CHECKPOINT_PATH = f"{digital_cousins.CHECKPOINT_DIR}/sam2_hiera_large.pt"
+GDINO_CHECKPOINT_PATH = f"{agdc.CHECKPOINT_DIR}/groundingdino_swint_ogc.pth"
+GSAMV2_CHECKPOINT_PATH = f"{agdc.CHECKPOINT_DIR}/sam2_hiera_large.pt"
 GSAMV2_CONFIG = "sam2_hiera_l.yaml"
 
 

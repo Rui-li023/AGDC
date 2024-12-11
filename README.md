@@ -29,7 +29,7 @@ cd segment-anything-2 && pip install -e . && cd ..
 if [ ! -d "GroundingDINO" ]; then
   git clone https://github.com/IDEA-Research/GroundingDINO.git
 fi
-cd GroundingDINO && export CUDA_HOME=${CUDA_HOME} && pip install --no-build-isolation -e . && cd ..
+cd GroundingDINO && export CUDA_HOME=/usr/local/cuda-12.4 && pip install --no-build-isolation -e . && cd ..
 
 # PerspectiveFields
 if [ ! -d "PerspectiveFields" ]; then
