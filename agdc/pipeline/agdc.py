@@ -1,9 +1,10 @@
 from copy import deepcopy
-import agdc
 
 import yaml
 import argparse
 import os
+import agdc
+
 from agdc.models.feature_matcher import FeatureMatcher
 from agdc.pipeline.extraction import RealWorldExtractor
 
@@ -138,8 +139,8 @@ if __name__ == "__main__":
                         help="Absolute path to config file to use. If not specified, will use default.")
     parser.add_argument("--gpt_api_key", type=str, default=None,
                         help="GPT API key to use. If not specified, will use value found from config file.")
-    parser.add_argument("--gpt_api_key", type=str, default=None,
-                        help="GPT API key to use. If not specified, will use value found from config file.")
+    parser.add_argument("--gpt_base_url", type=str, default=None,
+                        help="GPT base url to use. If not specified, will use value found from config file.")
     parser.add_argument("--skip_step_1", action="store_true",
                         help="If set, will skip ACDC Step 1 (Real World Extraction)")
     parser.add_argument("--skip_step_2", action="store_true",

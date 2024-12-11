@@ -6,7 +6,7 @@ from PIL import Image
 import open3d as o3d
 import matplotlib.pyplot as plt
 from shapely.geometry import Polygon, MultiPoint
-import digital_cousins.utils.transform_utils as T
+import agdc.utils.transform_utils as T
 import torch
 from typing import List
 from torchvision.ops import box_convert
