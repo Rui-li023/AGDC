@@ -1,0 +1,14 @@
+pipeline:
+  verbose: true
+
+  RealWorldExtractor:
+    call:
+      gpt_api_key: null
+      gpt_version: 4o
+      gpt_base_url: "https://api.openai.com/v1/chat/completions" 
+      captions: null
+      camera_intrinsics_matrix: null
+      depth_max_limit: 20.0
+      filter_backsplash: true
+      infer_aligned_wall: true
+      visualize: false
