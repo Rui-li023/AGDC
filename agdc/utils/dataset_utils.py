@@ -7,21 +7,21 @@ import subprocess
 import progressbar
 import argparse
 from bddl.object_taxonomy import ObjectTaxonomy
-import digital_cousins
+import agdc
 
 
 pbar = None
 
 # Load articulated child link counts
 # This is nested dictionary, mapping category --> model --> (n_doors, n_drawers) tuple
-if os.path.exists(digital_cousins.ASSET_DIR):
-    with open(os.path.join(digital_cousins.ASSET_DIR, "articulation_info.json"), "r") as f:
+if os.path.exists(agdc.ASSET_DIR):
+    with open(os.path.join(agdc.ASSET_DIR, "articulation_info.json"), "r") as f:
         ARTICULATION_INFO = json.load(f)
 
-    with open(os.path.join(digital_cousins.ASSET_DIR, "articulated_obj_valid_rotation_angle_range.json"), "r") as f:
+    with open(os.path.join(agdc.ASSET_DIR, "articulated_obj_valid_rotation_angle_range.json"), "r") as f:
         ARTICULATION_VALID_ANGLES = json.load(f)
 
-    with open(os.path.join(digital_cousins.ASSET_DIR, "_tmp_reorientation_info.json"), "r") as f:
+    with open(os.path.join(agdc.ASSET_DIR, "_tmp_reorientation_info.json"), "r") as f:
         REORIENTATION_INFO = json.load(f)
 else:
     print("Warning: ACDC assets have not been downloaded. Missing key metadata files.")
@@ -46,14 +46,14 @@ def download_acdc_assets():
     Download ACDC assets
     """
     # Print user agreement
-    if os.path.exists(digital_cousins.ASSET_DIR):
-        print(f"ACDC assets path {digital_cousins.ASSET_DIR} already exists. Skipping assets download.")
+    if os.path.exists(agdc.ASSET_DIR):
+        print(f"ACDC assets path {agdc.ASSET_DIR} already exists. Skipping assets download.")
     else:
         tmp_file = os.path.join(tempfile.gettempdir(), "acdc_assets.zip")
         path = "https://storage.googleapis.com/gibson_scenes/acdc_assets.zip"
         print(f"Downloading and decompressing ACDC assets from {path}")
         assert urlretrieve(path, tmp_file, show_progress), "ACDC asset download failed."
-        assert subprocess.call(["unzip", tmp_file, "-d", digital_cousins.REPO_DIR]) == 0, "ACDC assets extraction failed."
+        assert subprocess.call(["unzip", tmp_file, "-d", agdc.REPO_DIR]) == 0, "ACDC assets extraction failed."
         # These datasets come as folders; in these folder there are scenes, so --strip-components are needed.
 
 
@@ -71,7 +71,7 @@ def get_all_dataset_categories(dataset_path=None, do_not_include_categories=None
     Returns:
         set: all available dataset categories (with underscores replaced with spaces)
     """
-    dataset_path = digital_cousins.ASSET_DIR if dataset_path is None else dataset_path
+    dataset_path = agdc.ASSET_DIR if dataset_path is None else dataset_path
     do_not_include_categories = set() if do_not_include_categories is None else set(do_not_include_categories)
     replace_str = " " if replace_underscores else "_"
     return {cat.replace("_", replace_str) for cat in os.listdir(f"{dataset_path}/objects") if cat not in do_not_include_categories}

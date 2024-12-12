@@ -61,7 +61,7 @@ class DepthAnythingV2(torch.nn.Module):
         self.model = _DepthAnythingV2(**{**self.CONFIGS[backbone_size], "max_depth": self.max_depth})
         self.model.load_state_dict(
             torch.load(
-                f"{digital_cousins.CHECKPOINT_DIR}/depth_anything_v2_metric_{backbone_dataset}_{self.CONFIGS[backbone_size]['encoder']}.pth",
+                f"{agdc.CHECKPOINT_DIR}/depth_anything_v2_metric_{backbone_dataset}_{self.CONFIGS[backbone_size]['encoder']}.pth",
                 map_location=self.device,
                 weights_only=True,
             ),

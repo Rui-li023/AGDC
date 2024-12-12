@@ -1,9 +1,9 @@
 import numpy as np
 import torch as th
 import trimesh
-import digital_cousins.utils.transform_utils as T
-from digital_cousins.utils.processing_utils import distance_to_plane, create_polygon_from_vertices
-import omnigibson as og
+import agdc.utils.transform_utils as T
+from agdc.utils.processing_utils import distance_to_plane, create_polygon_from_vertices
+# import omnigibson as og
 
 def compute_relative_cam_pose_from(z_dir, origin_pos, init_quat=None):
     """

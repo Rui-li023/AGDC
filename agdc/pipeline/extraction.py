@@ -69,6 +69,7 @@ class RealWorldExtractor:
             input_path,
             gpt_api_key,
             gpt_version="4o",
+            gpt_base_url=None,
             captions=None,
             camera_intrinsics_matrix=None,
             depth_max_limit=20.,
@@ -160,7 +161,7 @@ class RealWorldExtractor:
 
         # Create GPT
         assert gpt_api_key is not None, "gpt_api_key must be specified in order to use GPT model!"
-        gpt = GPT(api_key=gpt_api_key, version=gpt_version)
+        gpt = GPT(api_key=gpt_api_key, version=gpt_version, base_url=gpt_base_url)
 
         if self.verbose:
             print(f"Extracting real-world info from image {input_path}...")

@@ -1,4 +1,4 @@
-import digital_cousins
+import agdc
 # If you store the offline dataset elsewhere, please uncomment the following line and put the directory here
 # digital_cousins.ASSET_DIR = "~/assets"
 
@@ -7,9 +7,9 @@ from PIL import Image
 import numpy as np
 import torch
 import argparse
-from digital_cousins.models.gpt import GPT
-import digital_cousins
-import omnigibson as og
+from agdc.models.gpt import GPT
+import agdc
+# import omnigibson as og
 
 TEST_DIR = os.path.dirname(__file__)
 SAVE_DIR = f"{TEST_DIR}/test_acdc_output"
@@ -17,14 +17,14 @@ TEST_IMG_PATH = f"{TEST_DIR}/test_img.png"
 CAPTION = "Fridge. Cabinet."
 
 def test_dinov2(args):
-    from digital_cousins.models.dino_v2 import DinoV2Encoder
+    from agdc.models.dino_v2 import DinoV2Encoder
     encoder = DinoV2Encoder()
     img = np.array(Image.open(TEST_IMG_PATH))
     encoder.get_features(img)
 
 
 def test_gsamv2(args):
-    from digital_cousins.models.grounded_sam_v2 import GroundedSAMv2
+    from agdc.models.grounded_sam_v2 import GroundedSAMv2
     gsam = GroundedSAMv2()
     img_source, img = gsam.load_image(TEST_IMG_PATH)
     boxes, logits, phrases = gsam.predict_boxes(img, CAPTION)
@@ -32,18 +32,18 @@ def test_gsamv2(args):
 
 
 def test_perspective_fields(args):
-    from digital_cousins.models.perspective_fields import PerspectiveFields
+    from agdc.models.perspective_fields import PerspectiveFields
     PerspectiveFields().estimate_camera_intrinsics(input_path=TEST_IMG_PATH)
 
 
 def test_depth_anything_2(args):
-    from digital_cousins.models.depth_anything_v2 import DepthAnythingV2
+    from agdc.models.depth_anything_v2 import DepthAnythingV2
     depth_path = f"{TEST_DIR}/test_depth.png"
     DepthAnythingV2().estimate_depth_linear(input_path=TEST_IMG_PATH, output_path=depth_path)
 
 
 def test_clip(args):
-    from digital_cousins.models.clip import CLIPEncoder
+    from agdc.models.clip import CLIPEncoder
     encoder = CLIPEncoder()
     img = np.array(Image.open(TEST_IMG_PATH))
     encoder.get_features(img)
@@ -67,7 +67,7 @@ def test_faiss(args):
 
 
 def test_gpt(args):
-    from digital_cousins.models.gpt import GPT
+    from agdc.models.gpt import GPT
     gpt = GPT(api_key=args.gpt_api_key, version=args.gpt_version)
     obj_caption_prompt_payload = gpt.payload_get_object_caption(img_path=TEST_IMG_PATH)
     gpt_text_response = gpt(payload=obj_caption_prompt_payload, verbose=True)
@@ -75,11 +75,11 @@ def test_gpt(args):
 
 
 def test_fm(args):
-    import digital_cousins
-    from digital_cousins.models.feature_matcher import FeatureMatcher
+    import agdc
+    from agdc.models.feature_matcher import FeatureMatcher
     from torchvision.ops.boxes import _box_xyxy_to_cxcywh
     from groundingdino.util.inference import load_image
-    from digital_cousins.utils.processing_utils import compute_bbox_from_mask
+    from agdc.utils.processing_utils import compute_bbox_from_mask
 
     save_dir = f"{TEST_DIR}/test_fm_outputs"
     obj_mask_fpath = f"{save_dir}/test_img_mask.png"
@@ -106,7 +106,7 @@ def test_fm(args):
     bboxes = _box_xyxy_to_cxcywh(
         torch.tensor(compute_bbox_from_mask(obj_mask_fpath))).unsqueeze(dim=0)
 
-    candidate_imgs_fdirs = [f"{digital_cousins.ASSET_DIR}/objects/{og_category}/snapshot"
+    candidate_imgs_fdirs = [f"{agdc.ASSET_DIR}/objects/{og_category}/snapshot"
                             for og_category in ["fridge", "wine_fridge", "bottom_cabinet", "display_fridge"]]
 
     model_results = fm.find_nearest_neighbor_candidates(
@@ -128,7 +128,7 @@ def test_fm(args):
 
 
 def test_acdc_step_1(args):
-    from digital_cousins.pipeline.acdc import ACDC
+    from agdc.pipeline.acdc import ACDC
     pipeline = ACDC()
     pipeline.run(
         input_path=TEST_IMG_PATH,
@@ -144,7 +144,7 @@ def test_acdc_step_1(args):
 
 
 def test_acdc_step_2(args):
-    from digital_cousins.pipeline.acdc import ACDC
+    from agdc.pipeline.acdc import ACDC
     pipeline = ACDC()
     pipeline.run(
         input_path=TEST_IMG_PATH,
@@ -159,7 +159,7 @@ def test_acdc_step_2(args):
     del pipeline
 
 def test_acdc_step_3(args):
-    from digital_cousins.pipeline.acdc import ACDC
+    from agdc.pipeline.acdc import ACDC
     pipeline = ACDC()
     pipeline.run(
         input_path=TEST_IMG_PATH,
@@ -174,19 +174,19 @@ def test_acdc_step_3(args):
     del pipeline
 
 
-# OG test should always be at the end since it requires a full shutdown during termination
-def test_og(args):
-    import omnigibson as og
-    from omnigibson.macros import gm
-    gm.HEADLESS = True
-    og.launch()
+# # OG test should always be at the end since it requires a full shutdown during termination
+# def test_og(args):
+#     import omnigibson as og
+#     from omnigibson.macros import gm
+#     gm.HEADLESS = True
+#     og.launch()
 
-    print()
-    print("*" * 30)
-    print("All tests successfully completed!")
-    print("*" * 30)
-    print()
-    og.shutdown()
+#     print()
+#     print("*" * 30)
+#     print("All tests successfully completed!")
+#     print("*" * 30)
+#     print()
+#     og.shutdown()
 
 
 def main(args):
@@ -207,8 +207,7 @@ def main(args):
     test_acdc_step_1(args)
     test_acdc_step_2(args)
     test_acdc_step_3(args)
-    og.shutdown()
-
+    # og.shutdown()
     # Final test -- OG should always come at the end
     # This og test cannot run together with test_acdc_step_3
     # because the simulator can only be launched once, and after calling og.shutdown(), the whole process will terminate
